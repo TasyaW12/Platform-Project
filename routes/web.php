@@ -15,7 +15,8 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::get('/booking-list', [BookingController::class, 'list'])->name('booking.list');
 });
 
-
-Route::get('/testimoni/create/{class_id}', [TestimoniController::class, 'create'])->name('testimoni.create')->middleware('auth');
-Route::post('/testimoni/store', [TestimoniController::class, 'store'])->name('testimoni.store')->middleware('auth');
-Route::get('/testimoni/list', [TestimoniController::class, 'list'])->name('testimoni.list')->middleware('auth');
+Route::middleware('auth')->group(function() {
+    Route::get('/testimoni/create/{class_id}', [TestimoniController::class, 'create'])->name('testimoni.create')->middleware('auth');
+    Route::post('/testimoni/store', [TestimoniController::class, 'store'])->name('testimoni.store')->middleware('auth');
+    Route::get('/testimoni/list', [TestimoniController::class, 'list'])->name('testimoni.list')->middleware('auth');
+});
