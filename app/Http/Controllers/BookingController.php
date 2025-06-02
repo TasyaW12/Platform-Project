@@ -20,6 +20,18 @@ class BookingController extends Controller
         $request->validate([
             'schedule_id' => 'required|exists:schedules,id',
         ]);
+        $user_id = Auth::id();
+        $schedule = Schedule::findOrFail($request->schedule_id); 
+
+        $currentBookings = Booking::where('schedule_id', $schedule->id)->count();
+
+        if (!isset($schedule->max_participants)) {
+            return redirect()->back()->withErrors(['Kuota maksimal belum disetting pada jadwal ini.']);
+        }
+
+        if ($currentBookings >= $schedule->max_participants) {
+            return redirect()->back()->withErrors(['Jadwal ini sudah penuh. Silakan pilih jadwal lain.']);
+        }
 
         Booking::create([
             'user_id' => Auth::id(),
