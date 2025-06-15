@@ -35,6 +35,7 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        //membuat user baru
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -43,8 +44,9 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        Auth::login($user);
+         // Pengalihan ke halaman login setelah registrasi
+    return redirect()->route('login')->with('status', 'Registration successful! Please log in.');
 
-        return redirect(route('dashboard', absolute: false));
+        
     }
 }
