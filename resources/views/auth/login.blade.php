@@ -47,4 +47,13 @@
             </x-primary-button>
         </div>
     </form>
+       <!-- Register Link -->
+    <div class="flex justify-center mt-4">
+        <p class="text-sm text-gray-600">
+            {{ __("Don't have an account?") }} 
+            <a href="{{ route('register') }}" class="text-indigo-600 hover:text-indigo-900">
+                {{ __('Register') }}
+            </a>
+        </p>
+    </div>
 @endsection
