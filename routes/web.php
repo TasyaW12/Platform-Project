@@ -33,7 +33,7 @@ Route::prefix('subkategori/{subcategory_id}/kelas')->group(function () {
 
 Route::get('/', function () {
     return view('welcome');
-
+});
 
 // Rute untuk Login hanya untuk pengguna yang belum login (guest)
 Route::middleware('guest')->get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
@@ -60,4 +60,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
