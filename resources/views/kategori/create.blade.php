@@ -1,8 +1,9 @@
 <!-- resources/views/kategori/create.blade.php -->
-@extends('layouts.app')
+<x-app-layout>
+    <x-slot name="header">
+        <h2>Buat Kategori Baru</h2>
+    </x-slot>
 
-@section('content')
-    <h1>Buat Kategori Baru</h1>
     <form action="{{ route('kategori.store') }}" method="POST">
         @csrf
         <div>
@@ -11,4 +12,4 @@
         </div>
         <button type="submit">Simpan</button>
     </form>
-@endsection
+</x-app-layout>

@@ -1,20 +1,27 @@
 <!-- resources/views/kategori/index.blade.php -->
-@extends('layouts.app')
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            Daftar Kategori
+        </h2>
+    </x-slot>
 
-@section('content')
-    <h1>Daftar Kategori</h1>
-    <a href="{{ route('kategori.create') }}">Buat Kategori Baru</a>
-    <ul>
-        @foreach($kategoris as $kategori)
-            <li>
-                {{ $kategori->nama }}
-                <a href="{{ route('kategori.edit', $kategori->id) }}">Edit</a>
-                <form action="{{ route('kategori.destroy', $kategori->id) }}" method="POST" style="display:inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit">Hapus</button>
-                </form>
-            </li>
-        @endforeach
-    </ul>
-@endsection
+    <div class="mt-6">
+        <a href="{{ route('kategori.create') }}" class="text-blue-500">Buat Kategori Baru</a>
+        <ul class="mt-4">
+            @foreach($kategoris as $kategori)
+                <li class="flex justify-between items-center">
+                    <span>{{ $kategori->nama }}</span>
+                    <div class="space-x-2">
+                        <a href="{{ route('kategori.edit', $kategori->id) }}" class="text-yellow-500">Edit</a>
+                        <form action="{{ route('kategori.destroy', $kategori->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-red-500">Hapus</button>
+                        </form>
+                    </div>
+                </li>
+            @endforeach
+        </ul>
+    </div>
+</x-app-layout>
