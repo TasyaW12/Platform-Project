@@ -37,7 +37,13 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 
     // CRUD untuk Kategori
-    Route::resource('kategori', KategoriController::class);
+    Route::get('kategori', [KategoriController::class, 'index'])->name('kategori.index');
+    Route::get('kategori/create', [KategoriController::class, 'create'])->name('kategori.create');
+    Route::post('kategori', [KategoriController::class, 'store'])->name('kategori.store');
+    Route::get('kategori/{id}/edit', [KategoriController::class, 'edit'])->name('kategori.edit');
+    Route::patch('kategori/{id}', [KategoriController::class, 'update'])->name('kategori.update');
+    Route::delete('kategori/{id}', [KategoriController::class, 'destroy'])->name('kategori.destroy');
+
 
     // CRUD untuk Subkategori
     Route::prefix('kategori/{category_id}/subkategori')->group(function () {

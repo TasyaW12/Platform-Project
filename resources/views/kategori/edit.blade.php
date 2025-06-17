@@ -12,8 +12,8 @@
             @method('PATCH')
 
             <div>
-                <label for="nama">Nama Kategori</label>
-                <input type="text" name="nama" id="nama" value="{{ old('nama', $kategori->nama) }}" required>
+                <label for="name">Nama Kategori</label>
+                <input type="text" name="name" id="name" value="{{ old('name', $kategori->name) }}" required>
             </div>
 
             <button type="submit" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">Update</button>

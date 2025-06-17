@@ -8,6 +8,9 @@ class Subcategory extends Model
 {
     use HasFactory;
 
+    // ✅ Tambahkan field yang boleh diisi secara massal
+    protected $fillable = ['name', 'category_id'];
+
     public function category()
     {
         return $this->belongsTo(Category::class);

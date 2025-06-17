@@ -7,8 +7,8 @@
     <form action="{{ route('kategori.store') }}" method="POST">
         @csrf
         <div>
-            <label for="nama">Nama Kategori</label>
-            <input type="text" name="nama" id="nama" required>
+            <label for="name">Nama Kategori</label>
+            <input type="text" name="name" id="name" required>
         </div>
         <button type="submit">Simpan</button>
     </form>
