@@ -1,14 +1,15 @@
 <!-- resources/views/kategori/create.blade.php -->
-@extends('layouts.app')
+<x-app-layout>
+    <x-slot name="header">
+        <h2>Buat Kategori Baru</h2>
+    </x-slot>
 
-@section('content')
-    <h1>Buat Kategori Baru</h1>
     <form action="{{ route('kategori.store') }}" method="POST">
         @csrf
         <div>
-            <label for="nama">Nama Kategori</label>
-            <input type="text" name="nama" id="nama" required>
+            <label for="name">Nama Kategori</label>
+            <input type="text" name="name" id="name" required>
         </div>
         <button type="submit">Simpan</button>
     </form>
-@endsection
+</x-app-layout>

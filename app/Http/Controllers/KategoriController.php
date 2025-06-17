@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 class KategoriController extends Controller
-{ 
- // Menampilkan daftar kategori
+{
+    // Menampilkan daftar kategori
     public function index()
     {
         $kategoris = Category::all();
