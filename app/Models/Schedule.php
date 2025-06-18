@@ -10,7 +10,7 @@ class Schedule extends Model
 
     public function class()
     {
-        return $this->belongsTo(Kelas::class);
+        return $this->belongsTo(\App\Models\Kelas::class, 'class_id');
     }
 
     public function bookings()

@@ -14,39 +14,39 @@
                         <!-- Subkategori -->
                         <ul id="kategori-{{ $kategori->id }}" class="ml-4 mt-1 space-y-1 hidden text-sm text-pink-700">
                             @foreach ($kategori->subcategories as $sub)
-                                <li class="ml-2">• {{ $sub->name }}</li>
+                                <li class="ml-2">
+                                    <a href="{{ route('kelas.index', $sub->id) }}" class="hover:underline">
+                                        • {{ $sub->name }}
+                                    </a>
+                                </li>
                             @endforeach
 
-                            @if(Auth::user()->role == 'admin')
-                                <li class="mt-2">
-                                    <a href="{{ route('subkategori.create', $kategori->id) }}"
-                                        class="text-pink-500 hover:underline">
-                                        ➕ Tambah Subkategori
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('subkategori.index', $kategori->id) }}"
-                                        class="text-pink-500 hover:underline">
-                                        🛠 Kelola Subkategori
-                                    </a>
-                                </li>
-                            @endif
+                            <li class="mt-2">
+                                <a href="{{ route('subkategori.create', $kategori->id) }}"
+                                    class="text-pink-500 hover:underline">
+                                    ➕ Tambah Subkategori
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('subkategori.index', $kategori->id) }}"
+                                    class="text-pink-500 hover:underline">
+                                    🛠 Kelola Subkategori
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 @endforeach
 
-                @if(Auth::user()->role == 'admin')
-                    <li class="pt-4 border-t border-pink-300">
-                        <a href="{{ route('kategori.create') }}" class="text-pink-500 font-semibold hover:underline">
-                            ➕ Tambah Kategori
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('kategori.index') }}" class="text-pink-500 font-semibold hover:underline">
-                            🛠 Kelola Kategori
-                        </a>
-                    </li>
-                @endif
+                <li class="pt-4 border-t border-pink-300">
+                    <a href="{{ route('kategori.create') }}" class="text-pink-500 font-semibold hover:underline">
+                        ➕ Tambah Kategori
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('kategori.index') }}" class="text-pink-500 font-semibold hover:underline">
+                        🛠 Kelola Kategori
+                    </a>
+                </li>
             </ul>
         </aside>
 
@@ -72,12 +72,9 @@
     </div>
 
     <script>
-        // Toggle function for sidebar visibility and dropdown
         function toggle(id) {
             const el = document.getElementById(id);
-            if (el) {
-                el.classList.toggle('hidden');
-            }
+            if (el) el.classList.toggle('hidden');
         }
     </script>
 </x-app-layout>

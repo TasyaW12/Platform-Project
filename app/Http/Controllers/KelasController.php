@@ -31,12 +31,20 @@ class KelasController extends Controller
             'description' => 'required|string',
             'price' => 'required|numeric',
             'max_participants' => 'required|integer',
+            'image_url' => 'nullable|string',
         ]);
 
         $subcategory = Subcategory::findOrFail($subcategory_id);
         $subcategory->classes()->create($request->all());
 
         return redirect()->route('kelas.index', $subcategory_id)->with('success', 'Kelas berhasil dibuat.');
+    }
+    // Menampilkan detail kelas (untuk user & admin)
+    public function show($subcategory_id, $id)
+    {
+        $subcategory = Subcategory::findOrFail($subcategory_id);
+        $kelas = Kelas::with('schedules')->findOrFail($id);
+        return view('kelas.show', compact('kelas', 'subcategory'));
     }
 
     // Menampilkan form untuk mengedit kelas

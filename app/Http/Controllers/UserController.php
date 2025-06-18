@@ -3,15 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Category;
 
 class UserController extends Controller
 {
 
     public function index()
     {
-        // Mengarahkan ke view dashboard user
-        return view('user.dashboard');  // Pastikan kamu memiliki view untuk user dashboard
-    }
+        $kategoriList = Category::with('subcategories')->get();
+        return view('user.dashboard', compact('kategoriList'));
 
+    }
 }
 
