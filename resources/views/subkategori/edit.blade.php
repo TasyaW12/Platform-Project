@@ -14,7 +14,7 @@
                     class="border p-2 w-full rounded">
             </div>
 
-            <button type="submit" class="bg-pink-500 text-white px-4 py-2 rounded">Perbarui Subkategori</button>
+            <button type="submit" class="btn-pink-cute">Perbarui Subkategori</button>
         </form>
 
         @if ($errors->any())

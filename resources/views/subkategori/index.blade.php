@@ -1,49 +1,55 @@
 <!-- resources/views/subkategori/index.blade.php -->
 <x-app-layout>
-    <div class="p-6">
-        <h1 class="text-2xl font-bold mb-4">
-            Daftar Subkategori untuk Kategori: {{ $category->name }}
+    <div class="max-w-5xl mx-auto px-6 py-10">
+        <h1 class="text-3xl font-extrabold text-pink-700 mb-8 text-center">
+            📂 Subkategori untuk Kategori: {{ $category->name }}
         </h1>
 
         <!-- Tombol Tambah Subkategori -->
-        <a href="{{ route('subkategori.create', $category->id) }}"
-           class="inline-block bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 mb-4">
-           + Tambah Subkategori
-        </a>
+        <div class="flex justify-end mb-6">
+            <a href="{{ route('subkategori.create', $category->id) }}" class="btn btn-primary text-sm md:text-base">
+                ➕ Tambah Subkategori
+            </a>
+        </div>
 
         @if ($subcategories->count() > 0)
-            <table class="min-w-full border bg-white shadow rounded">
-                <thead class="bg-pink-200 text-gray-800">
-                    <tr>
-                        <th class="px-4 py-2 border text-left">#</th>
-                        <th class="px-4 py-2 border text-left">Nama Subkategori</th>
-                        <th class="px-4 py-2 border text-left">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($subcategories as $index => $sub)
-                        <tr class="hover:bg-pink-50">
-                            <td class="px-4 py-2 border">{{ $index + 1 }}</td>
-                            <td class="px-4 py-2 border">{{ $sub->name }}</td>
-                            <td class="px-4 py-2 border">
-                                <a href="{{ route('subkategori.edit', [$category->id, $sub->id]) }}"
-                                   class="text-blue-500 hover:underline">Edit</a>
-                                <span class="text-gray-400 mx-1">|</span>
-                                <form action="{{ route('subkategori.destroy', [$category->id, $sub->id]) }}"
-                                      method="POST"
-                                      style="display:inline;"
-                                      onsubmit="return confirm('Yakin ingin menghapus subkategori ini?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-500 hover:underline">Hapus</button>
-                                </form>
-                            </td>
+            <div class="overflow-x-auto bg-white rounded-xl shadow-md">
+                <table class="min-w-full divide-y divide-pink-200">
+                    <thead class="bg-pink-100 text-pink-800 text-left text-sm font-semibold">
+                        <tr>
+                            <th class="px-6 py-3">#</th>
+                            <th class="px-6 py-3">Nama Subkategori</th>
+                            <th class="px-6 py-3">Aksi</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody class="text-gray-700 text-sm divide-y divide-pink-50">
+                        @foreach ($subcategories as $index => $sub)
+                            <tr class="hover:bg-pink-50">
+                                <td class="px-6 py-4">{{ $index + 1 }}</td>
+                                <td class="px-6 py-4 font-medium">{{ $sub->name }}</td>
+                                <td class="px-6 py-4 flex gap-3 items-center">
+                                    <a href="{{ route('subkategori.edit', [$category->id, $sub->id]) }}"
+                                        class="text-blue-600 hover:underline font-semibold">
+                                        ✏️ Edit
+                                    </a>
+                                    <form action="{{ route('subkategori.destroy', [$category->id, $sub->id]) }}" method="POST"
+                                        onsubmit="return confirm('Yakin ingin menghapus subkategori ini?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-600 hover:underline font-semibold">
+                                            🗑️ Hapus
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         @else
-            <p class="text-gray-600 mt-4">Belum ada subkategori untuk kategori ini.</p>
+            <p class="text-gray-500 mt-6 text-center italic">
+                Belum ada subkategori untuk kategori ini.
+            </p>
         @endif
     </div>
 </x-app-layout>
