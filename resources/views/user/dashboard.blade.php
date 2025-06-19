@@ -1,62 +1,64 @@
 <x-app-layout>
-    <div class="flex h-screen">
+    <div class="flex min-h-screen bg-pink-50"> <!-- ubah dari h-screen ke min-h-screen -->
+
         <!-- Sidebar -->
-        <div id="sidebar" class="w-64 bg-pink-100 p-4 space-y-4 hidden md:block">
-            <h2 class="text-xl font-bold mb-4">Kategori</h2>
+        <aside id="sidebar" class="w-64 bg-pink-100 p-4 shadow-md border-r border-pink-200">
+            <h2 class="text-xl font-bold text-pink-600 mb-4">🎀 Kategori</h2>
 
-            <ul class="space-y-2 ml-2">
-                <!-- Beauty -->
-                <li>
-                    <button onclick="toggle('beauty-sub')" class="font-semibold text-left w-full">Beauty</button>
-                    <ul id="beauty-sub" class="ml-4 mt-1 space-y-1 hidden text-sm text-pink-700">
-                        <li>Facial</li>
-                        <li>Make Up</li>
-                        <li>Hair Styling</li>
-                    </ul>
-                </li>
-
-                <!-- Cooking -->
-                <li>
-                    <button onclick="toggle('cooking-sub')" class="font-semibold text-left w-full">Cooking</button>
-                    <ul id="cooking-sub" class="ml-4 mt-1 space-y-1 hidden text-sm text-pink-700">
-                        <li>Healthy Food</li>
-                        <li>Snack</li>
-                        <li>Baking</li>
-                    </ul>
-                </li>
-
-                <!-- Creative Touch -->
-                <li>
-                    <button onclick="toggle('creative-sub')" class="font-semibold text-left w-full">Creative Touch</button>
-                    <ul id="creative-sub" class="ml-4 mt-1 space-y-1 hidden text-sm text-pink-700">
-                        <li>Crafting</li>
-                        <li>Handlettering</li>
-                        <li>DIY Gifts</li>
-                    </ul>
-                </li>
+            <ul class="space-y-3 text-sm">
+                @foreach ($kategoriList as $kategori)
+                    <li>
+                        <p class="font-semibold text-gray-800">{{ $kategori->name }}</p>
+                        <ul class="ml-4 text-pink-700 space-y-1">
+                            @foreach ($kategori->subcategories as $sub)
+                                <li>
+                                    <a href="{{ route('subkategori.kelas.index', $sub->id) }}" class="hover:underline">
+                                        • {{ $sub->name }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </li>
+                @endforeach
             </ul>
-        </div>
+        </aside>
 
-        <!-- Main Content -->
-        <div class="flex-1 p-6">
-            <!-- Hamburger button -->
-            <button class="md:hidden mb-4" onclick="toggle('sidebar')">
-                <svg class="w-6 h-6 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
+        <!-- Konten Utama -->
+        <main class="flex-1 p-6">
+            <h1 class="text-xl font-semibold text-pink-700 mb-3">Welcome to Lova Life!</h1>
+            <h3 class="text-lg font-bold text-pink-600 mb-2">📌 Riwayat Booking Anda:</h3>
 
-            <h1 class="text-2xl font-bold mb-4">Welcome to Lova Life!</h1>
-            <p class="text-gray-700">Silakan pilih kategori di menu sebelah kiri atau tekan tombol di atas 👆</p>
-        </div>
+            @if($bookings->isEmpty())
+                <p class="text-gray-500 italic">Belum ada booking yang dilakukan.</p>
+            @else
+                @foreach($bookings as $booking)
+                    <div class="bg-white p-4 rounded-lg border shadow-sm mb-4">
+                        <p><strong>Kelas:</strong> {{ $booking->schedule->kelas->title }}</p>
+                        <p><strong>Tanggal:</strong> {{ $booking->schedule->date }}</p>
+                        <p><strong>Waktu:</strong> {{ $booking->schedule->start_time }} - {{ $booking->schedule->end_time }}</p>
+                        <p><strong>Status:</strong>
+                            <span class="text-sm px-2 py-1 rounded 
+                                                                        {{ $booking->status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                    ($booking->status === 'confirmed' ? 'bg-green-100 text-green-800' :
+                        'bg-red-100 text-red-800') }}">
+                                {{ ucfirst($booking->status) }}
+                            </span>
+                        </p>
+                        @if($bookings->isEmpty())
+                            <div class="text-center mt-10 text-gray-600">
+                                <img src="{{ asset('images/empty_booking.png') }}" alt="No booking yet"
+                                    class="mx-auto mb-6 w-52 opacity-80">
+                                <h4 class="text-xl font-semibold text-pink-600 mb-2">Belum ada booking yang dilakukan</h4>
+                                <p class="mb-4">Yuk cari kelas yang menarik dan booking sekarang juga!</p>
+                                <a href="{{ route('kategori.index') }}" class="btn btn-primary">🔍 Jelajahi Kelas</a>
+                            </div>
+                        @else
+                            {{-- tampilkan booking seperti biasa --}}
+                        @endif
+
+                    </div>
+                @endforeach
+            @endif
+        </main>
     </div>
-
-    <script>
-        function toggle(id) {
-            const el = document.getElementById(id);
-            el.classList.toggle('hidden');
-        }
-    </script>
 </x-app-layout>

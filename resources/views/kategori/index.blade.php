@@ -1,44 +1,54 @@
 <x-app-layout>
-    <div class="p-6">
-        <h1 class="text-2xl font-bold mb-4">Daftar Kategori</h1>
+    <div class="max-w-5xl mx-auto px-6 py-10">
+        <h1 class="text-3xl font-extrabold text-pink-700 mb-8 text-center">
+            📁 Daftar Kategori
+        </h1>
 
         <!-- Tombol Tambah Kategori -->
-        <a href="{{ route('kategori.create') }}"
-            class="inline-block bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 mb-4">
-            + Buat Kategori Baru
-        </a>
+        <div class="flex justify-end mb-6">
+            <a href="{{ route('kategori.create') }}" class="btn btn-primary text-sm md:text-base">
+                ➕ Buat Kategori Baru
+            </a>
+        </div>
 
-        @if($kategoris->count() > 0)
-            <table class="min-w-full border bg-white shadow rounded">
-                <thead class="bg-blue-200 text-gray-800">
-                    <tr>
-                        <th class="px-4 py-2 border text-left">#</th>
-                        <th class="px-4 py-2 border text-left">Nama Kategori</th>
-                        <th class="px-4 py-2 border text-left">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($kategoris as $index => $kategori)
-                        <tr class="hover:bg-blue-50">
-                            <td class="px-4 py-2 border">{{ $index + 1 }}</td>
-                            <td class="px-4 py-2 border">{{ $kategori->name }}</td>
-                            <td class="px-4 py-2 border">
-                                <a href="{{ route('kategori.edit', $kategori->id) }}"
-                                    class="text-yellow-500 hover:underline">Edit</a>
-                                <span class="text-gray-400 mx-1">|</span>
-                                <form action="{{ route('kategori.destroy', $kategori->id) }}" method="POST"
-                                    style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus kategori ini?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-500 hover:underline">Hapus</button>
-                                </form>
-                            </td>
+        @if ($kategoris->count() > 0)
+            <div class="overflow-x-auto bg-white rounded-xl shadow-md">
+                <table class="min-w-full divide-y divide-pink-200">
+                    <thead class="bg-pink-100 text-pink-800 text-left text-sm font-semibold">
+                        <tr>
+                            <th class="px-6 py-3">#</th>
+                            <th class="px-6 py-3">Nama Kategori</th>
+                            <th class="px-6 py-3">Aksi</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody class="text-gray-700 text-sm divide-y divide-pink-50">
+                        @foreach ($kategoris as $index => $kategori)
+                            <tr class="hover:bg-pink-50">
+                                <td class="px-6 py-4">{{ $index + 1 }}</td>
+                                <td class="px-6 py-4 font-medium">{{ $kategori->name }}</td>
+                                <td class="px-6 py-4 flex gap-3 items-center">
+                                    <a href="{{ route('kategori.edit', $kategori->id) }}"
+                                        class="text-blue-600 hover:underline font-semibold">
+                                        ✏️ Edit
+                                    </a>
+                                    <form action="{{ route('kategori.destroy', $kategori->id) }}" method="POST"
+                                        onsubmit="return confirm('Yakin ingin menghapus kategori ini?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-600 hover:underline font-semibold">
+                                            🗑️ Hapus
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         @else
-            <p class="text-gray-600 mt-4">Belum ada kategori yang tersedia.</p>
+            <p class="text-gray-500 mt-6 text-center italic">
+                Belum ada kategori yang tersedia.
+            </p>
         @endif
     </div>
 </x-app-layout>

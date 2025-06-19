@@ -5,6 +5,9 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\SubkategoriController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\TestimonialController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
@@ -25,10 +28,25 @@ Route::post('/register', [RegisteredUserController::class, 'store']);
 // Rute untuk User
 Route::middleware(['auth'])->group(function () {
     Route::get('/user/dashboard', [UserController::class, 'index'])->name('user.dashboard');
-    Route::get('/user/categories', [KategoriController::class, 'index'])->name('user.categories');
-    Route::get('/user/subcategories', [SubkategoriController::class, 'index'])->name('user.subcategories');
-    Route::get('/user/classes', [KelasController::class, 'index'])->name('user.classes');
+
+    Route::prefix('subkategori/{subcategory_id}/kelas')->group(function () {
+        Route::get('/', [KelasController::class, 'index'])->name('subkategori.kelas.index');
+    });
+    //Route::get('/', [KelasController::class, 'index'])->name('subkategori.kelas.index');
+
+    Route::get('subkategori/{subcategory_id}/kelas/{id}', [KelasController::class, 'show'])->name('kelas.show');
+
+    Route::get('subkategori/{subcategory_id}/kelas/{id}', [KelasController::class, 'show'])
+        ->where('id', '[0-9]+')  // supaya tidak konflik dengan "create"
+        ->name('kelas.show');
+    Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
+    Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
+    Route::delete('/bookings/{booking}', [BookingController::class, 'destroy'])->name('bookings.destroy');
+
+    Route::post('/testimonial', [TestimonialController::class, 'store'])->middleware('auth')->name('testimonial.store');
+
 });
+
 
 
 
@@ -54,21 +72,56 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(
         Route::patch('{id}', [SubkategoriController::class, 'update'])->name('subkategori.update');
         Route::delete('{id}', [SubkategoriController::class, 'destroy'])->name('subkategori.destroy');
     });
+
+
+
     // CRUD untuk Kelas
     Route::prefix('subkategori/{subcategory_id}/kelas')->group(function () {
-        Route::get('/', [KelasController::class, 'index'])->name('kelas.index');
+
+        // Route create HARUS di atas semua dynamic {id}
         Route::get('create', [KelasController::class, 'create'])->name('kelas.create');
-        Route::post('/', [KelasController::class, 'store'])->name('kelas.store');
-        Route::get('{id}/edit', [KelasController::class, 'edit'])->name('kelas.edit');
-        Route::patch('{id}', [KelasController::class, 'update'])->name('kelas.update');
-        Route::delete('{id}', [KelasController::class, 'destroy'])->name('kelas.destroy');
+
+        // Route untuk menyimpan kelas baru
+        //Route::post('subkategori/{subcategory_id}/kelas', [KelasController::class, 'store'])->name('kelas.store');
+
+        Route::post('/', [KelasController::class, 'store'])->name('subkategori.kelas.store');
+
+
+        // Batasi ID untuk edit/update/delete hanya angka agar tidak bentrok dengan 'create'
+        Route::get('{id}/edit', [KelasController::class, 'edit'])
+            ->where('id', '[0-9]+')
+            ->name('kelas.edit');
+
+        Route::patch('{id}', [KelasController::class, 'update'])
+            ->where('id', '[0-9]+')
+            ->name('kelas.update');
+
+        Route::delete('{id}', [KelasController::class, 'destroy'])
+            ->where('id', '[0-9]+')
+            ->name('kelas.destroy');
+
+
     });
+    // Tampilkan semua booking
+    Route::get('/admin/bookings', [BookingController::class, 'adminBookingList'])->name('admin.bookings');
+
+    // Update status booking
+    Route::patch('/admin/bookings/{id}', [BookingController::class, 'updateStatus'])->name('admin.bookings.update');
+
+
 });
+Route::prefix('kelas/{kelas_id}/jadwal')->group(function () {
+    Route::get('create', [ScheduleController::class, 'create'])->name('jadwal.create');
+    Route::post('/', [ScheduleController::class, 'store'])->name('jadwal.store');
+});
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+
 
 require __DIR__ . '/auth.php';

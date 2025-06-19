@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -7,6 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Kelas extends Model
 {
     use HasFactory;
+    protected $table = 'classes';
+    protected $fillable = [
+        'subcategory_id',
+        'title',
+        'description',
+        'image_url',
+        'price',
+        'max_participants',
+    ];
 
     public function subcategory()
     {
@@ -15,11 +24,13 @@ class Kelas extends Model
 
     public function schedules()
     {
-        return $this->hasMany(Schedule::class);
+        return $this->hasMany(\App\Models\Schedule::class, 'class_id');
     }
 
+    // App\Models\Kelas.php
     public function testimonials()
     {
-        return $this->hasMany(Testimonial::class);
+        return $this->hasMany(Testimonial::class, 'class_id');
     }
+
 }
