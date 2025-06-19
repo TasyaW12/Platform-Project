@@ -8,13 +8,31 @@ class Schedule extends Model
 {
     use HasFactory;
 
-    public function class()
+    /**
+     * Kolom-kolom yang boleh diisi secara massal (mass assignment)
+     */
+    protected $fillable = [
+        'kelas_id',     // foreign key ke tabel kelas
+        'date',         // tanggal jadwal
+        'start_time',   // (opsional) jam mulai
+        'end_time',     // (opsional) jam selesai
+        'instructor_name',
+    ];
+
+    /**
+     * Relasi: Schedule milik satu kelas
+     */
+    public function kelas()
     {
-        return $this->belongsTo(\App\Models\Kelas::class, 'class_id');
+        return $this->belongsTo(\App\Models\Kelas::class, 'kelas_id');
     }
 
+    /**
+     * Relasi: Schedule bisa memiliki banyak booking (jika ada tabel bookings)
+     * Jika belum ada model Booking, Anda bisa hapus method ini
+     */
     public function bookings()
     {
-        return $this->hasMany(Kelas::class);
+        return $this->hasMany(\App\Models\Booking::class); // pastikan model Booking ada
     }
 }
