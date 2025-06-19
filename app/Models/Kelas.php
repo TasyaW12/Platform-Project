@@ -27,8 +27,10 @@ class Kelas extends Model
         return $this->hasMany(\App\Models\Schedule::class, 'class_id');
     }
 
+    // App\Models\Kelas.php
     public function testimonials()
     {
-        return $this->hasMany(Testimonial::class);
+        return $this->hasMany(Testimonial::class, 'class_id');
     }
+
 }

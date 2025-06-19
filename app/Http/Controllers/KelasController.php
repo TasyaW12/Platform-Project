@@ -40,12 +40,17 @@ class KelasController extends Controller
         return redirect()->route('subkategori.kelas.index', $subcategory_id)->with('success', 'Kelas berhasil dibuat.');
     }
     // Menampilkan detail kelas (untuk user & admin)
+    // Menampilkan detail kelas (untuk user & admin)
     public function show($subcategory_id, $id)
     {
         $subcategory = Subcategory::findOrFail($subcategory_id);
-        $kelas = Kelas::with('schedules')->findOrFail($id);
+
+        // Ambil kelas dengan jadwal dan testimonial beserta user-nya
+        $kelas = Kelas::with(['schedules', 'testimonials.user'])->findOrFail($id);
+
         return view('kelas.show', compact('kelas', 'subcategory'));
     }
+
 
     // Menampilkan form untuk mengedit kelas
     public function edit($subcategory_id, $id)

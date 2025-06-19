@@ -95,4 +95,39 @@
         @endauth
 
     </div>
+    {{-- Form Testimoni --}}
+    @auth
+        @if(auth()->user()->role === 'user')
+            <div class="mt-6">
+                <h3 class="text-lg font-semibold mb-2">Tulis Testimoni</h3>
+                <form action="{{ route('testimonial.store') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="class_id" value="{{ $kelas->id }}">
+                    <textarea name="comment" class="w-full border rounded p-2" placeholder="Tulis testimoni Anda..."
+                        required></textarea>
+                    <select name="rating" class="mt-2 p-1 border rounded" required>
+                        <option value="5">★★★★★</option>
+                        <option value="4">★★★★</option>
+                        <option value="3">★★★</option>
+                        <option value="2">★★</option>
+                        <option value="1">★</option>
+                    </select>
+                    <button type="submit" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded">Kirim</button>
+                </form>
+            </div>
+        @endif
+    @endauth
+    <div class="mt-6">
+        <h3 class="text-lg font-semibold mb-2">Testimoni Peserta</h3>
+        @forelse ($kelas->testimonials as $testimonial)
+            <div class="border-b pb-2 mb-2">
+                <strong>{{ $testimonial->user->name }}</strong>
+                <span>({{ $testimonial->rating }} ★)</span>
+                <p>{{ $testimonial->comment }}</p>
+            </div>
+        @empty
+            <p>Belum ada testimoni.</p>
+        @endforelse
+    </div>
+
 </x-app-layout>
