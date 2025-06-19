@@ -86,14 +86,15 @@
                                     @csrf
                                     @method('PATCH')
                                     <input type="hidden" name="status" value="confirmed">
-                                    <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">✅
+                                    <button class="bg-green-500 text-black px-4 py-2 rounded hover:bg-green-600 transition">✅
                                         Konfirmasi</button>
+                                        
                                 </form>
                                 <form action="{{ route('admin.bookings.update', $booking->id) }}" method="POST">
                                     @csrf
                                     @method('PATCH')
                                     <input type="hidden" name="status" value="rejected">
-                                    <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">❌
+                                    <button class="bg-red-500 text-black px-4 py-2 rounded hover:bg-red-600 transition">❌
                                         Tolak</button>
                                 </form>
                             </div>

@@ -27,7 +27,7 @@
                 <input type="text" name="instructor_name" id="instructor_name" class="w-full border" required>
             </div>
 
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2">Simpan Jadwal</button>
+            <button type="submit" class="bg-blue-500 text-black px-4 py-2">Simpan Jadwal</button>
         </form>
     </div>
 </x-app-layout>
