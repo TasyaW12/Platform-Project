@@ -4,36 +4,45 @@
     </x-slot>
 
     <div class="p-4">
-        <form action="{{ route('kelas.store', $subcategory->id) }}" method="POST">
+        <form action="{{ route('kelas.store', $subcategory->id) }}"
+              method="POST"
+              enctype="multipart/form-data">
             @csrf
 
             <div class="mb-4">
                 <label for="title" class="block">Judul Kelas</label>
-                <input type="text" name="title" id="title" class="w-full border" required>
+                <input type="text" name="title" id="title"
+                       class="w-full border rounded" required>
             </div>
 
             <div class="mb-4">
                 <label for="description" class="block">Deskripsi Kelas</label>
-                <textarea name="description" id="description" class="w-full border" required></textarea>
+                <textarea name="description" id="description"
+                          class="w-full border rounded" required></textarea>
             </div>
 
             <div class="mb-4">
-                <label for="price" class="block">Harga</label>
-                <input type="number" name="price" id="price" class="w-full border" required>
+                <label for="price" class="block">Harga (Rp)</label>
+                <input type="number" name="price" id="price"
+                       class="w-full border rounded" required>
             </div>
 
             <div class="mb-4">
                 <label for="max_participants" class="block">Max Partisipan</label>
-                <input type="number" name="max_participants" id="max_participants" class="w-full border" required>
+                <input type="number" name="max_participants" id="max_participants"
+                       class="w-full border rounded" required>
             </div>
 
-            {{-- (Opsional) Tambahkan input gambar --}}
             <div class="mb-4">
-                <label for="image_url" class="block">URL Gambar</label>
-                <input type="text" name="image_url" id="image_url" class="w-full border">
+                <label for="image" class="block">Upload Gambar (optional)</label>
+                <input type="file" name="image" id="image"
+                       accept="image/*" class="w-full border rounded">
             </div>
 
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2">Simpan Kelas</button>
+            <button type="submit"
+                    class="bg-blue-500 text-white px-4 py-2 rounded">
+                Simpan Kelas
+            </button>
         </form>
     </div>
 </x-app-layout>

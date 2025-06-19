@@ -26,19 +26,26 @@ class KelasController extends Controller
     // Menyimpan kelas baru
     public function store(Request $request, $subcategory_id)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
+        $validated = $request->validate([
+            'title' => 'required|string',
             'description' => 'required|string',
             'price' => 'required|numeric',
             'max_participants' => 'required|integer',
-            'image_url' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-        $subcategory = Subcategory::findOrFail($subcategory_id);
-        $subcategory->classes()->create($request->all());
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('kelas_images', 'public');
+            $validated['image_url'] = $imagePath;
+        }
 
-        return redirect()->route('kelas.index', $subcategory_id)->with('success', 'Kelas berhasil dibuat.');
+        $validated['subcategory_id'] = $subcategory_id;
+
+        Kelas::create($validated);
+
+        return redirect()->route('subkategori.kelas.index', $subcategory_id);
     }
+
     // Menampilkan detail kelas (untuk user & admin)
     public function show($subcategory_id, $id)
     {
