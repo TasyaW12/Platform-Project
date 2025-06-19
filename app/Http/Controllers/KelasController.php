@@ -26,26 +26,19 @@ class KelasController extends Controller
     // Menyimpan kelas baru
     public function store(Request $request, $subcategory_id)
     {
-        $validated = $request->validate([
-            'title' => 'required|string',
+        $request->validate([
+            'title' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric',
             'max_participants' => 'required|integer',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'image_url' => 'nullable|string',
         ]);
 
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('kelas_images', 'public');
-            $validated['image_url'] = $imagePath;
-        }
+        $subcategory = Subcategory::findOrFail($subcategory_id);
+        $subcategory->classes()->create($request->all());
 
-        $validated['subcategory_id'] = $subcategory_id;
-
-        Kelas::create($validated);
-
-        return redirect()->route('subkategori.kelas.index', $subcategory_id);
+        return redirect()->route('subkategori.kelas.index', $subcategory_id)->with('success', 'Kelas berhasil dibuat.');
     }
-
     // Menampilkan detail kelas (untuk user & admin)
     public function show($subcategory_id, $id)
     {
@@ -70,12 +63,13 @@ class KelasController extends Controller
             'description' => 'required|string',
             'price' => 'required|numeric',
             'max_participants' => 'required|integer',
+            'image_url' => 'nullable|string',
         ]);
 
         $kelas = Kelas::findOrFail($id);  // Mengganti 'Class' menjadi 'Kelas'
         $kelas->update($request->all());
 
-        return redirect()->route('kelas.index', $subcategory_id)->with('success', 'Kelas berhasil diperbarui.');
+        return redirect()->route('subkategori.kelas.index', $subcategory_id)->with('success', 'Kelas berhasil diperbarui.');
     }
 
     // Menghapus kelas
@@ -84,6 +78,6 @@ class KelasController extends Controller
         $kelas = Kelas::findOrFail($id);  // Mengganti 'Class' menjadi 'Kelas'
         $kelas->delete();
 
-        return redirect()->route('kelas.index', $subcategory_id)->with('success', 'Kelas berhasil dihapus.');
+        return redirect()->route('subkategori.kelas.index', $subcategory_id)->with('success', 'Kelas berhasil dihapus.');
     }
 }

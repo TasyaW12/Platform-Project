@@ -15,7 +15,7 @@
                         <ul id="kategori-{{ $kategori->id }}" class="ml-4 mt-1 space-y-1 hidden text-sm text-pink-700">
                             @foreach ($kategori->subcategories as $sub)
                                 <li class="ml-2">
-                                    <a href="{{ route('kelas.index', $sub->id) }}" class="hover:underline">
+                                    <a href="{{ route('subkategori.kelas.index', $sub->id) }}" class="hover:underline">
                                         • {{ $sub->name }}
                                     </a>
                                 </li>
@@ -61,13 +61,55 @@
             </button>
 
             <!-- Konten Utama -->
-            <h1 class="text-2xl font-bold mb-4">Welcome to Lova Life!</h1>
-            <p class="text-gray-700">Silakan pilih kategori di menu sebelah kiri atau tekan tombol di atas 👆</p>
+            <hr class="my-6">
 
-            <div class="mt-6">
-                <h2 class="text-xl font-semibold text-pink-600">🎁 New Offers</h2>
-                <p class="text-gray-600">Discover exciting new offers and categories for you!</p>
-            </div>
+            <h2 class="text-xl font-bold text-pink-600 mb-4">📋 Booking Masuk</h2>
+
+            @if(session('success'))
+                <div class="bg-green-100 text-green-800 p-4 rounded mb-4">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @forelse($bookings as $booking)
+                    <div class="bg-white p-4 mb-4 border rounded shadow">
+                        <p><strong>Nama User:</strong> {{ $booking->user->name }}</p>
+                        <p><strong>Kelas:</strong> {{ $booking->schedule->kelas->title }}</p>
+                        <p><strong>Tanggal:</strong> {{ $booking->schedule->date }}</p>
+                        <p><strong>Waktu:</strong> {{ $booking->schedule->start_time }} - {{ $booking->schedule->end_time }}</p>
+                        <p><strong>Status Saat Ini:</strong>
+                            <span class="px-2 py-1 rounded text-sm
+                                {{ $booking->status == 'confirmed' ? 'bg-green-100 text-green-800' :
+                ($booking->status == 'rejected' ? 'bg-red-100 text-red-800' :
+                    'bg-yellow-100 text-yellow-800') }}">
+                                {{ ucfirst($booking->status) }}
+                            </span>
+                        </p>
+
+                        @if($booking->status == 'pending')
+                            <form action="{{ route('admin.bookings.update', $booking->id) }}" method="POST" class="mt-3 flex gap-2">
+                                @csrf
+                                @method('PATCH')
+                                <input type="hidden" name="status" value="confirmed">
+                                <button class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">
+                                    ✅ Konfirmasi
+                                </button>
+                            </form>
+
+                            <form action="{{ route('admin.bookings.update', $booking->id) }}" method="POST" class="mt-3">
+                                @csrf
+                                @method('PATCH')
+                                <input type="hidden" name="status" value="rejected">
+                                <button class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600">
+                                    ❌ Tolak
+                                </button>
+                            </form>
+                        @endif
+                    </div>
+            @empty
+                <p class="text-gray-500 italic">Belum ada booking.</p>
+            @endforelse
+
         </main>
     </div>
 

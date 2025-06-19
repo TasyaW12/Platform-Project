@@ -59,6 +59,18 @@
                         {{ $jadwal->end_time }}
                     </p>
                     <p><span class="font-semibold text-pink-700">Instruktur:</span><br>{{ $jadwal->instructor_name }}</p>
+                    @auth
+                        @if(auth()->user()->role === 'user')
+                            <form action="{{ route('bookings.store') }}" method="POST" class="mt-3">
+                                @csrf
+                                <input type="hidden" name="schedule_id" value="{{ $jadwal->id }}">
+                                <button type="submit"
+                                    class="bg-pink-600 text-white px-4 py-2 rounded-md shadow hover:bg-pink-700 transition">
+                                    Booking Sekarang
+                                </button>
+                            </form>
+                        @endif
+                    @endauth
                 </div>
             @empty
                 <p class="text-gray-500 italic">Belum ada jadwal ditambahkan.</p>

@@ -24,7 +24,7 @@ class Schedule extends Model
      */
     public function kelas()
     {
-        return $this->belongsTo(\App\Models\Kelas::class, 'kelas_id');
+        return $this->belongsTo(\App\Models\Kelas::class, 'class_id');
     }
 
     /**
