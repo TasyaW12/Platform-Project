@@ -31,7 +31,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [KelasController::class, 'index'])->name('kelas.index');
     });
     Route::get('subkategori/{subcategory_id}/kelas/{id}', [KelasController::class, 'show'])->name('kelas.show');
+
+    Route::get('subkategori/{subcategory_id}/kelas/{id}', [KelasController::class, 'show'])
+        ->where('id', '[0-9]+')  // supaya tidak konflik dengan "create"
+        ->name('kelas.show');
 });
+
 
 
 
@@ -62,12 +67,26 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(
 
     // CRUD untuk Kelas
     Route::prefix('subkategori/{subcategory_id}/kelas')->group(function () {
+        // Route create HARUS di atas semua dynamic {id}
         Route::get('create', [KelasController::class, 'create'])->name('kelas.create');
         Route::post('/', [KelasController::class, 'store'])->name('kelas.store');
-        Route::get('{id}/edit', [KelasController::class, 'edit'])->name('kelas.edit');
-        Route::patch('{id}', [KelasController::class, 'update'])->name('kelas.update');
-        Route::delete('{id}', [KelasController::class, 'destroy'])->name('kelas.destroy');
+
+        // Batasi ID untuk edit/update/delete hanya angka agar tidak bentrok dengan 'create'
+        Route::get('{id}/edit', [KelasController::class, 'edit'])
+            ->where('id', '[0-9]+')
+            ->name('kelas.edit');
+
+        Route::patch('{id}', [KelasController::class, 'update'])
+            ->where('id', '[0-9]+')
+            ->name('kelas.update');
+
+        Route::delete('{id}', [KelasController::class, 'destroy'])
+            ->where('id', '[0-9]+')
+            ->name('kelas.destroy');
+
+
     });
+
 
 });
 Route::prefix('kelas/{kelas_id}/jadwal')->group(function () {
